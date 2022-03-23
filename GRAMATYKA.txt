@@ -1,0 +1,23 @@
+start -> BEGIN program END
+program -> commands NEWLINEE chain
+commands -> command commands
+command  -> ID EQ element 
+element     -> sourcesvalue 
+	    -> probesvalue 
+	    -> electricelementsvalue
+	    -> diodesvalue 
+sourcesvalue -> VOLTAGESOURCE|CURRENTSOURCE ( eps )
+	     -> VOLTAGESOURCE|CURRENTSOURCE ( NUMBER )
+probesvalue -> VOLTAGEPROBE|CURRENTPROBE ( eps )
+electricelementsvalue -> RESISTOR|CAPACITOR|INDUCTOR ( NUMBER )
+		      -> RESISTOR|CAPACITOR|INDUCTOR ( SCNUMBER )
+diodesvalue -> DIODE ( eps )
+            -> DIODE ( diodeparameters )
+diodeparameters -> diodeparameter diodeparameter_next
+diodeparameter -> ID EQ NUMBER
+	       -> ID EQ SCNUMBER
+diodeparameter_next -> eps
+		    -> COMMA diodeparameter diodeparameter_next
+chain -> CHAINID chain_next
+      -> gnd chain_next
+chain_next -> CONNECTION chain

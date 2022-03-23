@@ -1,0 +1,42 @@
+begin
+  R1 = resistor(13.2) # rezystor o wartości 13.2 ohm
+  C1 = capacitor(100e-9) # kondensator o wartości 100e-9 faradów
+  VIN = voltagesource()
+  AM1 = currentprobe()
+
+  VIN[2] -- R1[1]
+  R1[2] -- C1[1]
+  C1[2] -- AM1[1]
+  AM1[2] -- VIN[1]
+  VIN[1] -- gnd
+end
+
+begin # opis obwodu zawsze zawarty jest pomiędzy słowami kluczowymi begin ... end
+  v = voltagesource(1.0) # voltagesource z argumentem oznacza stałą wartość napięcia
+  u = voltagesource() # voltagesource bez argumentu oznacza źródło o napięciu ustalanym w trakcie analizy obwodu
+  r = resistor(1400) # rezystor wymaga podania wartości swojej rezystancji
+  # sekcja definicji elementów obwodu musi kończyć się co najmniej jedną pustą linią (bez komentarza)
+  # wcięcia są nieistotne
+  c = capacitor(5e-12) # kondensator wymaga podania wartości swojej pojemności
+  l = inductor(0.000001) # cewka wymaga podania wartości swojej indukcyjności
+
+  u[2] -- r[1] # ta linia oznacza, że złącze nr 2 źródła napięcia u jest połączone ze złączem nr 1 rezystora r 
+  r[2] -- l[1]
+  l[2] -- c[1]
+  c[2] -- v[1]
+  v[2] -- u[1] -- gnd # ta linia oznacza, że złącze nr 2 źródła napięcia v jest połączone ze złączem nr 1 źródła napięcia u oraz z uziemieniem gnd
+end
+
+begin
+    j_in = voltagesource()
+    r1 = resistor(1e3)
+    c1 = capacitor(47e-9)
+    d1 = diode(is=1e-15) # parametry diody są podawane przy pomocy nazwanych parametrów
+    d2 = diode(is=1.8e-15, eta=2) # parametrów może być więcej niż jeden, albo zero (wtedy zakładane są domyślne wartości elementu)
+    j_out = voltageprobe() # sonda napięcia nie posiada żadnych parametrów
+
+    j_in[2] -- r1[1]
+    j_in[1] -- gnd
+    r1[2] -- c1[1] -- d1[2] -- d2[1] -- j_out[2]
+    gnd -- c1[2] -- d1[1] -- d2[2] -- j_out[1]
+end
